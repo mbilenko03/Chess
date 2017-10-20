@@ -19,7 +19,7 @@ public class Knight extends Piece
 	@Override
 	public String getIconName()
 	{
-		return "Pawn";
+		return "Knight";
 	}
 
 }

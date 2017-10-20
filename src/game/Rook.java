@@ -19,7 +19,7 @@ public class Rook extends Piece
 	@Override
 	public String getIconName()
 	{
-		return "Pawn";
+		return "Rook";
 	}
 
 }

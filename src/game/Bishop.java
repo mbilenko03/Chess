@@ -19,7 +19,7 @@ public class Bishop extends Piece
 	@Override
 	public String getIconName()
 	{
-		return "Pawn";
+		return "Bishop";
 	}
 
 }

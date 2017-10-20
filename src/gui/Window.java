@@ -72,7 +72,7 @@ public class Window extends JFrame implements ActionListener
 				// if odd
 				if (i % 2 == 1)
 				{
-					grid[i].setBackground(Color.BLACK);
+					grid[i].setBackground(Color.DARK_GRAY);
 				}
 			}
 
@@ -82,7 +82,7 @@ public class Window extends JFrame implements ActionListener
 				// if even
 				if (i % 2 == 0)
 				{
-					grid[i].setBackground(Color.BLACK);
+					grid[i].setBackground(Color.DARK_GRAY);
 
 				}
 

@@ -15,7 +15,7 @@ public class Board
 
 	public void setInitialPositions()
 	{
-		Pawn testPawn = new Pawn(new Position(0, 0), true);
+		Pawn testPawn = new Pawn(new Position(10), true);
 		this.addPiece(testPawn);
 	}
 
