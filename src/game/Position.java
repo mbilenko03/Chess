@@ -37,28 +37,12 @@ public class Position
 
 	private static int coorToPosition(String coor)
 	{
+		coor = coor.toUpperCase();
 		char letter = coor.charAt(0);
 		char number = coor.charAt(1);
 
-		int row = -number + 8;
-		int column = 0;
-
-		if (letter == 'A')
-			column = 0;
-		if (letter == 'B')
-			column = 1;
-		if (letter == 'C')
-			column = 2;
-		if (letter == 'D')
-			column = 3;
-		if (letter == 'E')
-			column = 4;
-		if (letter == 'F')
-			column = 5;
-		if (letter == 'G')
-			column = 6;
-		if (letter == 'H')
-			column = 7;
+		int row = letter - 'A';
+		int column = -(number - '0') + 8;
 
 		return convertToPosition(row, column);
 	}
@@ -66,6 +50,11 @@ public class Position
 	public Boolean isSamePosition(Position other)
 	{
 		return _position == other._position;
+	}
+
+	public int getIndex()
+	{
+		return _position;
 	}
 
 }

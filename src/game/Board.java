@@ -1,12 +1,8 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board
 {
-	List<Piece> whitePieces = new ArrayList<Piece>();
-	List<Piece> blackPieces = new ArrayList<Piece>();
+	Piece[] pieces = new Piece[64];
 
 	public Board()
 	{
@@ -15,33 +11,66 @@ public class Board
 
 	public void setInitialPositions()
 	{
-		Pawn testPawn = new Pawn(new Position(10), true);
-		this.addPiece(testPawn);
+		// White Piece
+		this.addPiece(new Pawn(new Position("a2"), true));
+		this.addPiece(new Pawn(new Position("b2"), true));
+		this.addPiece(new Pawn(new Position("c2"), true));
+		this.addPiece(new Pawn(new Position("d2"), true));
+		this.addPiece(new Pawn(new Position("e2"), true));
+		this.addPiece(new Pawn(new Position("f2"), true));
+		this.addPiece(new Pawn(new Position("g2"), true));
+		this.addPiece(new Pawn(new Position("h2"), true));
+
+		this.addPiece(new Knight(new Position("b1"), true));
+		this.addPiece(new Knight(new Position("g1"), true));
+
+		this.addPiece(new Bishop(new Position("c1"), true));
+		this.addPiece(new Bishop(new Position("f1"), true));
+
+		this.addPiece(new Rook(new Position("a1"), true));
+		this.addPiece(new Rook(new Position("h1"), true));
+
+		this.addPiece(new Queen(new Position("d1"), true));
+
+		this.addPiece(new King(new Position("e1"), true));
+
+		// Black Piece
+		this.addPiece(new Pawn(new Position("a7"), false));
+		this.addPiece(new Pawn(new Position("b7"), false));
+		this.addPiece(new Pawn(new Position("c7"), false));
+		this.addPiece(new Pawn(new Position("d7"), false));
+		this.addPiece(new Pawn(new Position("e7"), false));
+		this.addPiece(new Pawn(new Position("f7"), false));
+		this.addPiece(new Pawn(new Position("g7"), false));
+		this.addPiece(new Pawn(new Position("h7"), false));
+
+		this.addPiece(new Knight(new Position("b8"), false));
+		this.addPiece(new Knight(new Position("g8"), false));
+
+		this.addPiece(new Bishop(new Position("c8"), false));
+		this.addPiece(new Bishop(new Position("f8"), false));
+
+		this.addPiece(new Rook(new Position("a8"), false));
+		this.addPiece(new Rook(new Position("h8"), false));
+
+		this.addPiece(new Queen(new Position("d8"), false));
+
+		this.addPiece(new King(new Position("e8"), false));
+
 	}
 
 	public void addPiece(Piece piece)
 	{
-		if (piece.pieceColor)
-			whitePieces.add(piece);
-		else if (!piece.pieceColor)
-			blackPieces.add(piece);
-
+		if (getPiece(piece.currentPosition) == null)
+		{
+			pieces[piece.currentPosition.getIndex()] = piece;
+		} else
+			throw new IllegalArgumentException();
 	}
 
 	public Piece getPiece(Position position)
 	{
-		for (Piece piece : whitePieces)
-		{
-			if (piece.currentPosition.isSamePosition(position))
-				return piece;
-		}
-		for (Piece piece : blackPieces)
-		{
-			if (piece.currentPosition.isSamePosition(position))
-				return piece;
-		}
-
-		return null;
+		return pieces[position.getIndex()];
 	}
 
 	public void movePiece()

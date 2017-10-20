@@ -112,7 +112,7 @@ public class Window extends JFrame implements ActionListener
 				if (piece.pieceColor)
 					iconName = "../resources/White Pieces/" + iconName + "-icon.png";
 				else
-					iconName = "../resources/black pieces/" + iconName + "-icon.png";
+					iconName = "../resources/Black pieces/" + iconName + "-icon.png";
 
 				try
 				{

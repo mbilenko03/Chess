@@ -12,7 +12,15 @@ public class Pawn extends Piece
 	@Override
 	public Boolean canMoveTo(Position position, Boolean color)
 	{
-		// TODO Auto-generated method stub
+		Position currentPosition = this.currentPosition;
+
+		/*
+		 * is white or black if white if in row 2 check if position is equal to
+		 * currentPosition +2 column
+		 * 
+		 * check if row+1
+		 */
+
 		return null;
 	}
 
