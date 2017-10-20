@@ -16,4 +16,10 @@ public class Knight extends Piece
 		return null;
 	}
 
+	@Override
+	public String getIconName()
+	{
+		return "Pawn";
+	}
+
 }

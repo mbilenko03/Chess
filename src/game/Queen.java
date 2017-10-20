@@ -16,4 +16,10 @@ public class Queen extends Piece
 		return null;
 	}
 
+	@Override
+	public String getIconName()
+	{
+		return "Queen";
+	}
+
 }

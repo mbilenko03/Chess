@@ -1,11 +1,7 @@
-package gui;
+package game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import game.Pawn;
-import game.Piece;
-import game.Position;
 
 public class Board
 {
