@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece
@@ -27,17 +28,30 @@ public class Pawn extends Piece
 		{
 			if (currentY == 2)
 			{
-				if (newY == currentY - 2 || newY == currentY - 1)
+				if ((newY == currentY - 2 && newX == currentX) || (newY == currentY - 1 && newX == currentX))
+					return true;
+			} else
+			{
+				if ((newY == currentY - 1 && newX == currentX) || (newY == currentY - 1 && newX == currentX - 1)
+						|| (newY == currentY - 1 && newX == currentX + 1))
 					return true;
 			}
 		}
 
-		/*
-		 * is white or black if white if in row 2 check if position is equal to
-		 * currentPosition +2 column
-		 * 
-		 * check if row+1
-		 */
+		// if black
+		if (!this.pieceColor)
+		{
+			if (currentY == 7)
+			{
+				if ((newY == currentY + 2 && newX == currentX) || (newY == currentY + 1 && newX == currentX))
+					return true;
+			} else
+			{
+				if ((newY == currentY + 1 && newX == currentX) || (newY == currentY + 1 && newX == currentX + 1)
+						|| (newY == currentY + 1 && newX == currentX - 1))
+					return true;
+			}
+		}
 
 		return false;
 	}
@@ -51,8 +65,11 @@ public class Pawn extends Piece
 	@Override
 	public List<Position> getMoves()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<Position> moves = new ArrayList<Position>();
+
+		// figure out every possible move regardless of surroundings
+
+		return moves;
 	}
 
 }

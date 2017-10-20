@@ -1,5 +1,8 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board
 {
 	Piece[] pieces = new Piece[64];
@@ -93,6 +96,17 @@ public class Board
 				return true;
 
 		return false;
+	}
+
+	public List<Position> getMoves(Position position)
+	{
+		List<Position> moves = new ArrayList<Position>();
+
+		Piece piece = getPiece(position);
+
+		moves = piece.getMoves();
+
+		return moves;
 	}
 
 }
