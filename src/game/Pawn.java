@@ -16,4 +16,10 @@ public class Pawn extends Piece
 		return null;
 	}
 
+	@Override
+	public String getIconName()
+	{
+		return "Pawn";
+	}
+
 }

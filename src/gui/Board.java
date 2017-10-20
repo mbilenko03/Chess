@@ -1,11 +1,16 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import game.Pawn;
 import game.Piece;
+import game.Position;
 
 public class Board
 {
-	Piece[] whitePieces = new Piece[16];
-	Piece[] blackPieces = new Piece[16];
+	List<Piece> whitePieces = new ArrayList<Piece>();
+	List<Piece> blackPieces = new ArrayList<Piece>();
 
 	public Board()
 	{
@@ -14,47 +19,43 @@ public class Board
 
 	public void setInitialPositions()
 	{
-		setInitialPawns();
-		setInitialRooks();
-		setInitialKnights();
-		setInitialBishops();
-		setInitialQueens();
-		setInitialKings();
+		Pawn testPawn = new Pawn(new Position(0, 0), true);
+		this.addPiece(testPawn);
 	}
 
-	private void setInitialKings()
+	public void addPiece(Piece piece)
 	{
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setInitialQueens()
-	{
-		// TODO Auto-generated method stub
+		if (piece.pieceColor)
+			whitePieces.add(piece);
+		else if (!piece.pieceColor)
+			blackPieces.add(piece);
 
 	}
 
-	private void setInitialBishops()
+	public Piece getPiece(Position position)
 	{
-		// TODO Auto-generated method stub
+		for (Piece piece : whitePieces)
+		{
+			if (piece.currentPosition.isSamePosition(position))
+				return piece;
+		}
+		for (Piece piece : blackPieces)
+		{
+			if (piece.currentPosition.isSamePosition(position))
+				return piece;
+		}
+
+		return null;
+	}
+
+	public void movePiece()
+	{
 
 	}
 
-	private void setInitialKnights()
+	public Boolean isValidMove()
 	{
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setInitialRooks()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setInitialPawns()
-	{
-		for (int i = 0; i < 8; i++)
+		return null;
 	}
 
 }

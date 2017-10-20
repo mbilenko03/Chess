@@ -3,23 +3,33 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import game.Piece;
+import game.Position;
 
 public class Window extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 
-	final Dimension WINDOW_SIZE = new Dimension(600, 600);
+	final static int windowsize = 1000;
+	final Dimension WINDOW_SIZE = new Dimension(windowsize, windowsize);
 
 	final static int SIZE = 8;
 
 	static JPanel game = new JPanel();
 	static JButton[] grid = new JButton[SIZE * SIZE];
+
+	Board board = new Board();
 
 	public Window()
 	{
@@ -36,6 +46,9 @@ public class Window extends JFrame implements ActionListener
 
 		this.add(game);
 		setVisible(true);
+
+		updateBoard();
+
 	}
 
 	public static void initCheckerBoard()
@@ -80,6 +93,46 @@ public class Window extends JFrame implements ActionListener
 			}
 
 		}
+	}
+
+	public void updateBoard()
+	{
+		/*
+		 * Check every position Find corresponding picture Update button
+		 */
+
+		for (int i = 0; i < SIZE * SIZE; i++)
+		{
+			Piece piece = board.getPiece(new Position(i));
+
+			if (piece != null)
+			{
+				String iconName = piece.getIconName();
+				if (piece.pieceColor)
+					iconName = "../resources/White Pieces/" + iconName + "-icon.png";
+				else
+					iconName = "../resources/black pieces/" + iconName + "-icon.png";
+
+				try
+				{
+					Image img = ImageIO.read(getClass().getResource(iconName));
+					Dimension dimension = grid[0].getSize();
+					img = img.getScaledInstance((int) (dimension.getWidth() * 0.9), (int) (dimension.getHeight() * 0.9),
+							Image.SCALE_SMOOTH);
+					grid[i].setIcon(new ImageIcon(img));
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				grid[i].setIcon(null);
+			}
+
+			// clear it
+
+		}
+
 	}
 
 	@Override

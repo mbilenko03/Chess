@@ -30,4 +30,9 @@ public class Position
 		return y * SIZE + x;
 	}
 
+	public Boolean isSamePosition(Position other)
+	{
+		return _position == other._position;
+	}
+
 }

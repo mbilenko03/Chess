@@ -20,4 +20,6 @@ abstract public class Piece
 	}
 
 	public abstract Boolean canMoveTo(Position position, Boolean color);
+
+	public abstract String getIconName();
 }
