@@ -11,7 +11,7 @@ abstract public class Piece
 		pieceColor = color;
 	}
 
-	public void moveTo(int position)
+	public void moveTo(Position position)
 	{
 		if (canMoveTo(position, pieceColor))
 			currentPosition = position;
@@ -19,5 +19,5 @@ abstract public class Piece
 			throw new IllegalArgumentException();
 	}
 
-	public abstract Boolean canMoveTo(int position, Boolean color);
+	public abstract Boolean canMoveTo(Position position, Boolean color);
 }

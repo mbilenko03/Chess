@@ -3,14 +3,14 @@ package game;
 public class Bishop extends Piece
 {
 
-	public Bishop(int position, Boolean color)
+	public Bishop(Position position, Boolean color)
 	{
 		super(position, color);
 
 	}
 
 	@Override
-	public Boolean canMoveTo(int position, Boolean color)
+	public Boolean canMoveTo(Position position, Boolean color)
 	{
 		// logic
 		return null;

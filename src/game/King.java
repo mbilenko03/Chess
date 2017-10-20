@@ -3,14 +3,14 @@ package game;
 public class King extends Piece
 {
 
-	public King(int position, Boolean color)
+	public King(Position position, Boolean color)
 	{
 		super(position, color);
 
 	}
 
 	@Override
-	public Boolean canMoveTo(int position, Boolean color)
+	public Boolean canMoveTo(Position position, Boolean color)
 	{
 		// logic
 		return null;

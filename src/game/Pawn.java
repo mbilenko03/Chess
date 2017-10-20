@@ -3,14 +3,14 @@ package game;
 public class Pawn extends Piece
 {
 
-	public Pawn(int position, Boolean color)
+	public Pawn(Position position, Boolean color)
 	{
 		super(position, color);
 
 	}
 
 	@Override
-	public Boolean canMoveTo(int position, Boolean color)
+	public Boolean canMoveTo(Position position, Boolean color)
 	{
 		// TODO Auto-generated method stub
 		return null;
