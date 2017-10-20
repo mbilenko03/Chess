@@ -1,5 +1,7 @@
 package game;
 
+import java.util.List;
+
 public class Bishop extends Piece
 {
 
@@ -10,7 +12,7 @@ public class Bishop extends Piece
 	}
 
 	@Override
-	public Boolean canMoveTo(Position position, Boolean color)
+	public Boolean canMoveTo(Position position)
 	{
 		// logic
 		return null;
@@ -20,6 +22,13 @@ public class Bishop extends Piece
 	public String getIconName()
 	{
 		return "Bishop";
+	}
+
+	@Override
+	public List<Position> getMoves()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -57,4 +57,14 @@ public class Position
 		return _position;
 	}
 
+	public int getXCoor(int pos)
+	{
+		return pos / 8;
+	}
+
+	public int getYCoor(int pos)
+	{
+		return pos % 8;
+	}
+
 }

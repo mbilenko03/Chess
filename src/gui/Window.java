@@ -139,8 +139,9 @@ public class Window extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		// TODO Auto-generated method stub
-
+		// check what piece was clicked on
+		// change color to potential squares to move to
+		// move piece if potential square is clicked
 	}
 
 }

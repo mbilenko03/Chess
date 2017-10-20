@@ -1,5 +1,7 @@
 package game;
 
+import java.util.List;
+
 abstract public class Piece
 {
 	public Position currentPosition;
@@ -13,13 +15,15 @@ abstract public class Piece
 
 	public void moveTo(Position position)
 	{
-		if (canMoveTo(position, pieceColor))
+		if (canMoveTo(position))
 			currentPosition = position;
 		else
 			throw new IllegalArgumentException();
 	}
 
-	public abstract Boolean canMoveTo(Position position, Boolean color);
+	public abstract Boolean canMoveTo(Position position);
 
 	public abstract String getIconName();
+
+	public abstract List<Position> getMoves();
 }

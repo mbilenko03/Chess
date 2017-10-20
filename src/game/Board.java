@@ -56,7 +56,6 @@ public class Board
 		this.addPiece(new Queen(new Position("d8"), false));
 
 		this.addPiece(new King(new Position("e8"), false));
-
 	}
 
 	public void addPiece(Piece piece)
@@ -73,14 +72,27 @@ public class Board
 		return pieces[position.getIndex()];
 	}
 
-	public void movePiece()
+	public void movePiece(Piece piece, Position position)
 	{
-
+		if (isValidMove(piece, position))
+		{
+			pieces[piece.currentPosition.getIndex()] = null;
+			pieces[position.getIndex()] = piece;
+			piece.moveTo(position);
+		} else
+			throw new IllegalArgumentException();
 	}
 
-	public Boolean isValidMove()
+	public Boolean isValidMove(Piece piece, Position position)
 	{
-		return null;
+		// piece can only move to null or opposite color except king
+		Piece takePiece = pieces[position.getIndex()];
+
+		if (piece.canMoveTo(position))
+			if ((takePiece == null || takePiece.pieceColor != piece.pieceColor && !(takePiece instanceof King)))
+				return true;
+
+		return false;
 	}
 
 }
