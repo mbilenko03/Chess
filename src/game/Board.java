@@ -91,7 +91,7 @@ public class Board
 		// piece can only move to null or opposite color except king
 		Piece takePiece = pieces[position.getIndex()];
 
-		if (piece.canMoveTo(position))
+		if (piece.canMove(position))
 			if ((takePiece == null || takePiece.pieceColor != piece.pieceColor && !(takePiece instanceof King)))
 				return true;
 

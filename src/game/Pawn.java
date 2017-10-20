@@ -13,50 +13,6 @@ public class Pawn extends Piece
 	}
 
 	@Override
-	public Boolean canMoveTo(Position position)
-	{
-		Position currentPosition = this.currentPosition;
-
-		int currentX = currentPosition.getX();
-		int currentY = currentPosition.getY();
-
-		int newX = position.getX();
-		int newY = position.getY();
-
-		// if white
-		if (this.pieceColor)
-		{
-			if (currentY == 2)
-			{
-				if ((newY == currentY - 2 && newX == currentX) || (newY == currentY - 1 && newX == currentX))
-					return true;
-			} else
-			{
-				if ((newY == currentY - 1 && newX == currentX) || (newY == currentY - 1 && newX == currentX - 1)
-						|| (newY == currentY - 1 && newX == currentX + 1))
-					return true;
-			}
-		}
-
-		// if black
-		if (!this.pieceColor)
-		{
-			if (currentY == 7)
-			{
-				if ((newY == currentY + 2 && newX == currentX) || (newY == currentY + 1 && newX == currentX))
-					return true;
-			} else
-			{
-				if ((newY == currentY + 1 && newX == currentX) || (newY == currentY + 1 && newX == currentX + 1)
-						|| (newY == currentY + 1 && newX == currentX - 1))
-					return true;
-			}
-		}
-
-		return false;
-	}
-
-	@Override
 	public String getIconName()
 	{
 		return "Pawn";
@@ -73,10 +29,79 @@ public class Pawn extends Piece
 	}
 
 	@Override
+	public Boolean canMove(Position position)
+	{
+		Position currentPosition = this.currentPosition;
+
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = position.getX();
+		int newY = position.getY();
+
+		// Can pawn move forward
+
+		// if white
+		if (this.pieceColor)
+		{
+			if (currentY == 2)
+			{
+				if ((newY == currentY - 2 && newX == currentX) || (newY == currentY - 1 && newX == currentX))
+					return true;
+			} else
+			{
+				if (newY == currentY - 1 && newX == currentX)
+					return true;
+			}
+		}
+
+		// if black
+		if (!this.pieceColor)
+		{
+			if (currentY == 7)
+			{
+				if ((newY == currentY + 2 && newX == currentX) || (newY == currentY + 1 && newX == currentX))
+					return true;
+			} else
+			{
+				if (newY == currentY + 1 && newX == currentX)
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public Boolean canTake(Position position)
 	{
-		// diagnol stuff
-		return canMoveTo(position);
+
+		Position currentPosition = this.currentPosition;
+
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = position.getX();
+		int newY = position.getY();
+
+		// Can pawn move diagonally to take
+
+		// if white
+		if (this.pieceColor)
+		{
+			if ((newY == currentY - 1 && newX == currentX - 1) || (newY == currentY - 1 && newX == currentX + 1))
+				return true;
+
+		}
+
+		// if black
+		if (!this.pieceColor)
+		{
+			if ((newY == currentY + 1 && newX == currentX + 1) || (newY == currentY + 1 && newX == currentX - 1))
+				return true;
+		}
+
+		return false;
 	}
 
 }

@@ -15,13 +15,11 @@ abstract public class Piece
 
 	public void moveTo(Position position)
 	{
-		if (canMoveTo(position))
+		if (canMove(position))
 			currentPosition = position;
 		else
 			throw new IllegalArgumentException();
 	}
-
-	public abstract Boolean canMoveTo(Position position);
 
 	public abstract String getIconName();
 
@@ -29,7 +27,7 @@ abstract public class Piece
 
 	public Boolean canTake(Position position)
 	{
-		return canMoveTo(position);
+		return canMove(position);
 	}
 
 	public abstract List<Position> getMoves();
