@@ -72,4 +72,11 @@ public class Pawn extends Piece
 		return moves;
 	}
 
+	@Override
+	public Boolean canTake(Position position)
+	{
+		// diagnol stuff
+		return canMoveTo(position);
+	}
+
 }

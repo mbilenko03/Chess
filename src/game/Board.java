@@ -106,6 +106,8 @@ public class Board
 
 		moves = piece.getMoves();
 
+		// edit moves according to surroundings
+
 		return moves;
 	}
 

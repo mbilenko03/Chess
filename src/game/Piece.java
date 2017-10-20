@@ -25,5 +25,12 @@ abstract public class Piece
 
 	public abstract String getIconName();
 
+	public abstract Boolean canMove(Position position);
+
+	public Boolean canTake(Position position)
+	{
+		return canMoveTo(position);
+	}
+
 	public abstract List<Position> getMoves();
 }
