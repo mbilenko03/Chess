@@ -12,13 +12,6 @@ public class Knight extends Piece
 	}
 
 	@Override
-	public Boolean canMoveTo(Position position)
-	{
-		// logic
-		return null;
-	}
-
-	@Override
 	public String getIconName()
 	{
 		return "Knight";
@@ -26,6 +19,13 @@ public class Knight extends Piece
 
 	@Override
 	public List<Position> getMoves()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean canMove(Position position)
 	{
 		// TODO Auto-generated method stub
 		return null;

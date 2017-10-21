@@ -19,16 +19,6 @@ public class Pawn extends Piece
 	}
 
 	@Override
-	public List<Position> getMoves()
-	{
-		List<Position> moves = new ArrayList<Position>();
-
-		// figure out every possible move regardless of surroundings
-
-		return moves;
-	}
-
-	@Override
 	public Boolean canMove(Position position)
 	{
 		Position currentPosition = this.currentPosition;
@@ -44,7 +34,7 @@ public class Pawn extends Piece
 		// if white
 		if (this.pieceColor)
 		{
-			if (currentY == 2)
+			if (currentY == 6)
 			{
 				if ((newY == currentY - 2 && newX == currentX) || (newY == currentY - 1 && newX == currentX))
 					return true;
@@ -58,7 +48,7 @@ public class Pawn extends Piece
 		// if black
 		if (!this.pieceColor)
 		{
-			if (currentY == 7)
+			if (currentY == 1)
 			{
 				if ((newY == currentY + 2 && newX == currentX) || (newY == currentY + 1 && newX == currentX))
 					return true;
@@ -102,6 +92,16 @@ public class Pawn extends Piece
 		}
 
 		return false;
+	}
+
+	@Override
+	public List<Position> getMoves()
+	{
+		List<Position> moves = new ArrayList<Position>();
+
+		// figure out every possible move regardless of surroundings
+
+		return moves;
 	}
 
 }

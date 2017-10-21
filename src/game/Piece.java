@@ -15,7 +15,7 @@ abstract public class Piece
 
 	public void moveTo(Position position)
 	{
-		if (canMove(position))
+		if (canMove(position) || canTake(position))
 			currentPosition = position;
 		else
 			throw new IllegalArgumentException();

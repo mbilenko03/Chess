@@ -12,16 +12,31 @@ public class Bishop extends Piece
 	}
 
 	@Override
-	public Boolean canMoveTo(Position position)
-	{
-		// logic
-		return null;
-	}
-
-	@Override
 	public String getIconName()
 	{
 		return "Bishop";
+	}
+
+	@Override
+	public Boolean canMove(Position position)
+	{
+		Position currentPosition = this.currentPosition;
+
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = position.getX();
+		int newY = position.getY();
+
+		// can move diagonally
+		for (int i = 1; i < 8; i++)
+		{
+			if ((newY == currentY - i && newX == currentX - i) || (newY == currentY + i && newX == currentX + i)
+					|| (newY == currentY - i && newX == currentX + i) || (newY == currentY + i && newX == currentX - i))
+				return true;
+		}
+
+		return false;
 	}
 
 	@Override

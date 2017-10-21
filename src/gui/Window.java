@@ -22,43 +22,49 @@ public class Window extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 
-	final static int windowsize = 1000;
-	final Dimension WINDOW_SIZE = new Dimension(windowsize, windowsize);
+	final Dimension WINDOW_SIZE = new Dimension(1000, 1000);
 
 	final static int SIZE = 8;
 
-	static JPanel game = new JPanel();
-	static JButton[] grid = new JButton[SIZE * SIZE];
+	JPanel game = new JPanel();
+	JButton[] grid = new JButton[SIZE * SIZE];
 
 	Board board = new Board();
+
+	Piece selectedPiece = null;
+	Boolean isPieceSelected = false;
 
 	public Window()
 	{
 		super("Chess");
 
-		// make full screen later
+		// TODO Make full screen later
 		setSize(WINDOW_SIZE);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
 		game.setLayout(new GridLayout(SIZE, SIZE));
+
 		initCheckerBoard();
 
 		this.add(game);
+
 		setVisible(true);
 
 		updateBoard();
 
 	}
 
-	public static void initCheckerBoard()
+	// Create checker board pattern of buttons
+	public void initCheckerBoard()
 	{
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
 			// populate buttons to board
 			grid[i] = new JButton();
 			game.add(grid[i]);
+			grid[i].addActionListener(this);
 
 			// if even row
 			if ((i / SIZE) % 2 == 0)
@@ -96,12 +102,10 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Update images on board
 	public void updateBoard()
 	{
-		/*
-		 * Check every position Find corresponding picture Update button
-		 */
-
+		// Iterate through all buttons
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
 			Piece piece = board.getPiece(new Position(i));
@@ -118,8 +122,8 @@ public class Window extends JFrame implements ActionListener
 				{
 					Image img = ImageIO.read(getClass().getResource(iconName));
 					Dimension dimension = grid[0].getSize();
-					img = img.getScaledInstance((int) (dimension.getWidth() * 0.9), (int) (dimension.getHeight() * 0.9),
-							Image.SCALE_SMOOTH);
+					img = img.getScaledInstance((int) (dimension.getWidth() * 0.75),
+							(int) (dimension.getHeight() * 0.75), Image.SCALE_SMOOTH);
 					grid[i].setIcon(new ImageIcon(img));
 				} catch (IOException e)
 				{
@@ -129,19 +133,50 @@ public class Window extends JFrame implements ActionListener
 			{
 				grid[i].setIcon(null);
 			}
-
-			// clear it
-
 		}
 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0)
+	public void actionPerformed(ActionEvent source)
 	{
-		// check what piece was clicked on
+
 		// change color to potential squares to move to
 		// move piece if potential square is clicked
+
+		for (int i = 0; i < SIZE * SIZE; i++)
+		{
+			// check what piece was clicked on
+			if (grid[i] == source.getSource())
+			{
+				if (!isPieceSelected)
+				{
+					if (board.getPiece(new Position(i)) != null)
+					{
+						// TODO show potential moves
+						selectedPiece = board.getPiece(new Position(i));
+						isPieceSelected = true;
+
+					} else
+					{
+						selectedPiece = null;
+					}
+				} else
+				{
+					if (board.isValidMove(selectedPiece, new Position(i)))
+					{
+						board.movePiece(selectedPiece, new Position(i));
+						updateBoard();
+					}
+
+					selectedPiece = null;
+					isPieceSelected = false;
+				}
+
+				break;
+			}
+
+		}
 	}
 
 }
