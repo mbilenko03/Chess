@@ -34,8 +34,9 @@ public class Window extends JFrame implements ActionListener
 	Piece selectedPiece = null;
 	Boolean isPieceSelected = false;
 
-	// TODO implement which colors turn it is
 	// TODO implement option picker
+
+	Boolean isWhiteTurn = true;
 
 	public Window()
 	{
@@ -159,7 +160,8 @@ public class Window extends JFrame implements ActionListener
 			{
 				if (!isPieceSelected)
 				{
-					if (board.getPiece(new Position(i)) != null)
+					if (board.getPiece(new Position(i)) != null
+							&& board.getPiece(new Position(i)).pieceColor == isWhiteTurn)
 					{
 						// TODO show potential moves
 						selectedPiece = board.getPiece(new Position(i));
@@ -177,6 +179,7 @@ public class Window extends JFrame implements ActionListener
 						board.movePiece(selectedPiece, new Position(i));
 						updateAtPosition(previousPosition);
 						updateAtPosition(selectedPiece.currentPosition);
+						isWhiteTurn = !isWhiteTurn;
 					}
 
 					selectedPiece = null;

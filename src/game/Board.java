@@ -88,180 +88,36 @@ public class Board
 
 	public Boolean isValidMove(Piece piece, Position position)
 	{
-		// TODO Break up into various methods
 		Piece newPlace = pieces[position.getIndex()];
 
 		Position currentPosition = piece.currentPosition;
 
-		int currentX = currentPosition.getX();
-		int currentY = currentPosition.getY();
-
-		int newX = position.getX();
-		int newY = position.getY();
-
 		// Check if piece can move
 		if (piece.canMove(position))
-
-			// Check if there is no piece in the way
 			if ((newPlace == null))
 			{
-				// Rules for pawn:
+				// Rules for pieces:
 				if (piece instanceof Pawn)
 				{
-					// Make sure there are no pieces in the way
-					if (piece.pieceColor)
-						if (pieces[(new Position(currentX, currentY - 1)).getIndex()] != null)
-							return false;
-					if (!piece.pieceColor)
-						if (pieces[(new Position(currentX, currentY + 1)).getIndex()] != null)
-							return false;
+					return isPawnMoveValid(currentPosition, position, piece.pieceColor);
 				}
 
 				if (piece instanceof Rook)
 				{
-					if (currentY == newY)
-					{
-						if (currentX < newX)
-						{
-							for (int i = currentX + 1; i < newX; i++)
-							{
-								if (pieces[(new Position(i, currentY)).getIndex()] != null)
-									return false;
-							}
-						} else
-						{
-							for (int i = newX + 1; i < currentX; i++)
-							{
-								if (pieces[(new Position(i, currentY)).getIndex()] != null)
-									return false;
-							}
-						}
-					}
-
-					if (currentX == newX)
-					{
-						if (currentY < newY)
-						{
-							for (int i = currentY + 1; i < newY; i++)
-							{
-								if (pieces[(new Position(currentX, i)).getIndex()] != null)
-									return false;
-							}
-						} else
-						{
-							for (int i = newY + 1; i < currentY; i++)
-							{
-								if (pieces[(new Position(currentX, i)).getIndex()] != null)
-									return false;
-							}
-						}
-					}
+					return isRookMoveValid(currentPosition, position, piece.pieceColor);
 				}
 
 				if (piece instanceof Bishop)
 				{
-					int difference = Math.abs(newX - currentX);
-					if (currentX < newX && currentY < newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX + i, currentY + i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX > newX && currentY > newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX - i, currentY - i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX > newX && currentY < newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX - i, currentY + i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX < newX && currentY > newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX + i, currentY - i)).getIndex()] != null)
-								return false;
-						}
-					}
+					return isBishopMoveValid(currentPosition, position, piece.pieceColor);
 				}
 
 				if (piece instanceof Queen)
 				{
-					if (currentY == newY)
-					{
-						if (currentX < newX)
-						{
-							for (int i = currentX + 1; i < newX; i++)
-							{
-								if (pieces[(new Position(i, currentY)).getIndex()] != null)
-									return false;
-							}
-						} else
-						{
-							for (int i = newX + 1; i < currentX; i++)
-							{
-								if (pieces[(new Position(i, currentY)).getIndex()] != null)
-									return false;
-							}
-						}
-					}
-
-					if (currentX == newX)
-					{
-						if (currentY < newY)
-						{
-							for (int i = currentY + 1; i < newY; i++)
-							{
-								if (pieces[(new Position(currentX, i)).getIndex()] != null)
-									return false;
-							}
-						} else
-						{
-							for (int i = newY + 1; i < currentY; i++)
-							{
-								if (pieces[(new Position(currentX, i)).getIndex()] != null)
-									return false;
-							}
-						}
-					}
-
-					int difference = Math.abs(newX - currentX);
-					if (currentX < newX && currentY < newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX + i, currentY + i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX > newX && currentY > newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX - i, currentY - i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX > newX && currentY < newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX - i, currentY + i)).getIndex()] != null)
-								return false;
-						}
-					} else if (currentX < newX && currentY > newY)
-					{
-						for (int i = 1; i < difference; i++)
-						{
-							if (pieces[(new Position(currentX + i, currentY - i)).getIndex()] != null)
-								return false;
-						}
-					}
+					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
+					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
 				}
 
 				return true;
@@ -272,11 +128,136 @@ public class Board
 		{
 			// Check to make sure there exists a piece, it is of opposite color, and it is
 			// not a king
+			if (piece instanceof Rook)
+			{
+				return isRookMoveValid(currentPosition, position, piece.pieceColor);
+			}
+
+			if (piece instanceof Bishop)
+			{
+				return isBishopMoveValid(currentPosition, position, piece.pieceColor);
+			}
+
+			if (piece instanceof Queen)
+			{
+				if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+					return false;
+				if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+					return false;
+			}
+
 			if (newPlace != null && newPlace.pieceColor != piece.pieceColor && !(newPlace instanceof King))
 				return true;
 		}
 
 		return false;
+	}
+
+	public Boolean isPawnMoveValid(Position currentPosition, Position newPosition, Boolean pieceColor)
+	{
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		if (pieceColor)
+			if (pieces[(new Position(currentX, currentY - 1)).getIndex()] != null)
+				return false;
+		if (!pieceColor)
+			if (pieces[(new Position(currentX, currentY + 1)).getIndex()] != null)
+				return false;
+
+		return true;
+	}
+
+	public Boolean isRookMoveValid(Position currentPosition, Position newPosition, Boolean pieceColor)
+	{
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = newPosition.getX();
+		int newY = newPosition.getY();
+
+		if (currentY == newY)
+		{
+			if (currentX < newX)
+			{
+				for (int i = currentX + 1; i < newX; i++)
+				{
+					if (pieces[(new Position(i, currentY)).getIndex()] != null)
+						return false;
+				}
+			} else
+			{
+				for (int i = newX + 1; i < currentX; i++)
+				{
+					if (pieces[(new Position(i, currentY)).getIndex()] != null)
+						return false;
+				}
+			}
+		}
+
+		if (currentX == newX)
+		{
+			if (currentY < newY)
+			{
+				for (int i = currentY + 1; i < newY; i++)
+				{
+					if (pieces[(new Position(currentX, i)).getIndex()] != null)
+						return false;
+				}
+			} else
+			{
+				for (int i = newY + 1; i < currentY; i++)
+				{
+					if (pieces[(new Position(currentX, i)).getIndex()] != null)
+						return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public Boolean isBishopMoveValid(Position currentPosition, Position newPosition, Boolean pieceColor)
+	{
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = newPosition.getX();
+		int newY = newPosition.getY();
+
+		int difference = Math.abs(newX - currentX);
+
+		if (currentX < newX && currentY < newY)
+		{
+			for (int i = 1; i < difference; i++)
+			{
+				if (pieces[(new Position(currentX + i, currentY + i)).getIndex()] != null)
+					return false;
+			}
+		} else if (currentX > newX && currentY > newY)
+		{
+			for (int i = 1; i < difference; i++)
+			{
+				if (pieces[(new Position(currentX - i, currentY - i)).getIndex()] != null)
+					return false;
+			}
+		} else if (currentX > newX && currentY < newY)
+		{
+			for (int i = 1; i < difference; i++)
+			{
+				if (pieces[(new Position(currentX - i, currentY + i)).getIndex()] != null)
+					return false;
+			}
+		} else if (currentX < newX && currentY > newY)
+		{
+			for (int i = 1; i < difference; i++)
+			{
+				if (pieces[(new Position(currentX + i, currentY - i)).getIndex()] != null)
+					return false;
+			}
+		}
+
+		return true;
 	}
 
 	public List<Position> getMoves(Position position)
