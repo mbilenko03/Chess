@@ -18,14 +18,27 @@ public class Knight extends Piece
 	}
 
 	@Override
-	public List<Position> getMoves()
+	public Boolean canMove(Position position)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Position currentPosition = this.currentPosition;
+
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = position.getX();
+		int newY = position.getY();
+
+		if ((newY == currentY + 2 && newX == currentX + 1) || (newY == currentY + 2 && newX == currentX - 1)
+				|| (newY == currentY - 2 && newX == currentX + 1) || (newY == currentY - 2 && newX == currentX - 1)
+				|| (newY == currentY + 1 && newX == currentX + 2) || (newY == currentY + 1 && newX == currentX - 2)
+				|| (newY == currentY - 1 && newX == currentX + 2) || (newY == currentY - 1 && newX == currentX - 2))
+			return true;
+
+		return false;
 	}
 
 	@Override
-	public Boolean canMove(Position position)
+	public List<Position> getMoves()
 	{
 		// TODO Auto-generated method stub
 		return null;

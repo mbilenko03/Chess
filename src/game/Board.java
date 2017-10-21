@@ -118,9 +118,6 @@ public class Board
 
 				if (piece instanceof Rook)
 				{
-					// if moving horrizontally
-					// check if null for current x to new x exclusively
-
 					if (currentY == newY)
 					{
 						if (currentX < newX)
@@ -139,9 +136,6 @@ public class Board
 							}
 						}
 					}
-
-					// if moving vertically
-					// check if null for current y to new y exclusively
 
 					if (currentX == newX)
 					{
@@ -163,45 +157,111 @@ public class Board
 					}
 				}
 
-				// TODO fix bishop prevent skipping over logic
+				if (piece instanceof Bishop)
+				{
+					int difference = Math.abs(newX - currentX);
+					if (currentX < newX && currentY < newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX + i, currentY + i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX > newX && currentY > newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX - i, currentY - i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX > newX && currentY < newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX - i, currentY + i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX < newX && currentY > newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX + i, currentY - i)).getIndex()] != null)
+								return false;
+						}
+					}
+				}
 
-				// if (piece instanceof Bishop)
-				// {
-				//
-				// if (currentX < newX && currentY < newY)
-				// {
-				// for (int i = currentX + 1; i < newX; i++)
-				// {
-				// int j = currentY + 1 + i;
-				// if (pieces[(new Position(i, j)).getIndex()] != null)
-				// return false;
-				// }
-				// } else if (currentX > newX && currentY > newY)
-				// {
-				// for (int i = newX + 1; i < currentX; i++)
-				// {
-				// int j = currentY - 1 - i;
-				// if (pieces[(new Position(i, j)).getIndex()] != null)
-				// return false;
-				// }
-				// } else if (currentX > newX && currentY < newY)
-				// {
-				// for (int i = newX + 1; i < currentX; i++)
-				// {
-				// int j = currentY + 1 + i;
-				// if (pieces[(new Position(i, j)).getIndex()] != null)
-				// return false;
-				// }
-				// } else if (currentX < newX && currentY > newY)
-				// {
-				// for (int i = newX + 1; i < currentX; i++)
-				// {
-				// int j = currentY - 1 - i;
-				// if (pieces[(new Position(i, j)).getIndex()] != null)
-				// return false;
-				// }
-				// }
-				// }
+				if (piece instanceof Queen)
+				{
+					if (currentY == newY)
+					{
+						if (currentX < newX)
+						{
+							for (int i = currentX + 1; i < newX; i++)
+							{
+								if (pieces[(new Position(i, currentY)).getIndex()] != null)
+									return false;
+							}
+						} else
+						{
+							for (int i = newX + 1; i < currentX; i++)
+							{
+								if (pieces[(new Position(i, currentY)).getIndex()] != null)
+									return false;
+							}
+						}
+					}
+
+					if (currentX == newX)
+					{
+						if (currentY < newY)
+						{
+							for (int i = currentY + 1; i < newY; i++)
+							{
+								if (pieces[(new Position(currentX, i)).getIndex()] != null)
+									return false;
+							}
+						} else
+						{
+							for (int i = newY + 1; i < currentY; i++)
+							{
+								if (pieces[(new Position(currentX, i)).getIndex()] != null)
+									return false;
+							}
+						}
+					}
+
+					int difference = Math.abs(newX - currentX);
+					if (currentX < newX && currentY < newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX + i, currentY + i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX > newX && currentY > newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX - i, currentY - i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX > newX && currentY < newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX - i, currentY + i)).getIndex()] != null)
+								return false;
+						}
+					} else if (currentX < newX && currentY > newY)
+					{
+						for (int i = 1; i < difference; i++)
+						{
+							if (pieces[(new Position(currentX + i, currentY - i)).getIndex()] != null)
+								return false;
+						}
+					}
+				}
 
 				return true;
 			}

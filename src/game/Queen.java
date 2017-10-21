@@ -18,14 +18,35 @@ public class Queen extends Piece
 	}
 
 	@Override
-	public List<Position> getMoves()
+	public Boolean canMove(Position position)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Position currentPosition = this.currentPosition;
+
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
+
+		int newX = position.getX();
+		int newY = position.getY();
+
+		for (int i = 1; i < 8; i++)
+		{
+			if ((newY == currentY - i && newX == currentX - i) || (newY == currentY + i && newX == currentX + i)
+					|| (newY == currentY - i && newX == currentX + i) || (newY == currentY + i && newX == currentX - i))
+				return true;
+		}
+
+		for (int i = 1; i < 8; i++)
+		{
+			if ((newY == currentY + i && newX == currentX) || (newY == currentY - i && newX == currentX)
+					|| (newY == currentY && newX == currentX + i) || (newY == currentY && newX == currentX - i))
+				return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public Boolean canMove(Position position)
+	public List<Position> getMoves()
 	{
 		// TODO Auto-generated method stub
 		return null;

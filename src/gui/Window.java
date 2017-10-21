@@ -102,37 +102,42 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	public void updateAtPosition(Position position)
+	{
+		Piece piece = board.getPiece(position);
+
+		if (piece != null)
+		{
+			String iconName = piece.getIconName();
+			if (piece.pieceColor)
+				iconName = "../resources/White Pieces/" + iconName + "-icon.png";
+			else
+				iconName = "../resources/Black pieces/" + iconName + "-icon.png";
+
+			try
+			{
+				Image img = ImageIO.read(getClass().getResource(iconName));
+				Dimension dimension = grid[0].getSize();
+				img = img.getScaledInstance((int) (dimension.getWidth() * 0.75), (int) (dimension.getHeight() * 0.75),
+						Image.SCALE_SMOOTH);
+				grid[position.getIndex()].setIcon(new ImageIcon(img));
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		} else
+		{
+			grid[position.getIndex()].setIcon(null);
+		}
+	}
+
 	// Update images on board
 	public void updateBoard()
 	{
 		// Iterate through all buttons
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
-			Piece piece = board.getPiece(new Position(i));
-
-			if (piece != null)
-			{
-				String iconName = piece.getIconName();
-				if (piece.pieceColor)
-					iconName = "../resources/White Pieces/" + iconName + "-icon.png";
-				else
-					iconName = "../resources/Black pieces/" + iconName + "-icon.png";
-
-				try
-				{
-					Image img = ImageIO.read(getClass().getResource(iconName));
-					Dimension dimension = grid[0].getSize();
-					img = img.getScaledInstance((int) (dimension.getWidth() * 0.75),
-							(int) (dimension.getHeight() * 0.75), Image.SCALE_SMOOTH);
-					grid[i].setIcon(new ImageIcon(img));
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			} else
-			{
-				grid[i].setIcon(null);
-			}
+			updateAtPosition(new Position(i));
 		}
 
 	}
@@ -165,8 +170,10 @@ public class Window extends JFrame implements ActionListener
 				{
 					if (board.isValidMove(selectedPiece, new Position(i)))
 					{
+						Position previousPosition = selectedPiece.currentPosition;
 						board.movePiece(selectedPiece, new Position(i));
-						updateBoard();
+						updateAtPosition(previousPosition);
+						updateAtPosition(selectedPiece.currentPosition);
 					}
 
 					selectedPiece = null;
