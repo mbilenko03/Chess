@@ -88,6 +88,7 @@ public class Board
 
 	public Boolean isValidMove(Piece piece, Position position)
 	{
+		// TODO Break up into various methods
 		Piece newPlace = pieces[position.getIndex()];
 
 		Position currentPosition = piece.currentPosition;
@@ -280,6 +281,7 @@ public class Board
 
 	public List<Position> getMoves(Position position)
 	{
+		// TODO Implement
 		List<Position> moves = new ArrayList<Position>();
 
 		Piece piece = getPiece(position);

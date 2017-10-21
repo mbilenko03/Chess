@@ -34,6 +34,9 @@ public class Window extends JFrame implements ActionListener
 	Piece selectedPiece = null;
 	Boolean isPieceSelected = false;
 
+	// TODO implement which colors turn it is
+	// TODO implement option picker
+
 	public Window()
 	{
 		super("Chess");
