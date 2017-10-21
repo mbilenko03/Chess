@@ -163,6 +163,8 @@ public class Board
 					}
 				}
 
+				// TODO fix bishop prevent skipping over logic
+
 				// if (piece instanceof Bishop)
 				// {
 				//
