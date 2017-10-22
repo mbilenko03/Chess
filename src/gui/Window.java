@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.Board;
@@ -178,6 +179,26 @@ public class Window extends JFrame implements ActionListener
 
 	}
 
+	public void endGame()
+	{
+		for (int i = 0; i < SIZE * SIZE; i++)
+		{
+			grid[i].setEnabled(false);
+		}
+	}
+
+	private void endStaleGame()
+	{
+		endGame();
+		JOptionPane.showMessageDialog(null, "Stalemate!");
+	}
+
+	private void endCheckGame()
+	{
+		endGame();
+		JOptionPane.showMessageDialog(null, "Checkmate! " + !isWhiteTurn + " wins!");
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent source)
 	{
@@ -218,6 +239,11 @@ public class Window extends JFrame implements ActionListener
 					isPieceSelected = false;
 					clearOptions();
 				}
+
+				if (board.isKingCheckMate(isWhiteTurn))
+					endCheckGame();
+				if (board.isStaleMate(isWhiteTurn))
+					endStaleGame();
 
 				break;
 			}

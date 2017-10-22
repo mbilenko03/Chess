@@ -351,6 +351,59 @@ public class Board
 			return isPieceAttacked(blackKing);
 	}
 
+	public Boolean canPieceMove(Piece piece)
+	{
+		List<Position> moves = getMoves(piece.currentPosition);
+		if (moves.isEmpty())
+			return true;
+		else
+			return false;
+	}
+
+	public Boolean isKingCheckMate(Boolean isWhite)
+	{
+		if (isWhite)
+		{
+			if (isKingAttacked(isWhite) && !canPieceMove(whiteKing))
+				return true;
+			else
+				return false;
+		} else
+		{
+			if (isKingAttacked(isWhite) && !canPieceMove(blackKing))
+				return true;
+			else
+				return false;
+		}
+
+	}
+
+	public Boolean isStaleMate(Boolean isWhite)
+	{
+		List<Position> moves = new ArrayList<Position>();
+		if (isWhite)
+		{
+			for (Piece element : whitePieces)
+			{
+				moves.addAll(getMoves(element.currentPosition));
+			}
+
+			if (moves.isEmpty())
+				return true;
+		} else
+		{
+			for (Piece element : blackPieces)
+			{
+				moves.addAll(getMoves(element.currentPosition));
+			}
+
+			if (moves.isEmpty())
+				return true;
+		}
+
+		return false;
+	}
+
 	public List<Position> getMoves(Position position)
 	{
 		List<Position> moves = new ArrayList<Position>();
