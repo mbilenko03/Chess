@@ -155,7 +155,7 @@ public class Board
 				tempMove(piece, position);
 				Boolean invalid = isKingAttacked(piece.pieceColor);
 				tempMove(piece, currentPosition);
-				if (!invalid)
+				if (invalid)
 					return false;
 
 				return true;
@@ -290,6 +290,9 @@ public class Board
 	{
 		Piece newPlace = pieces[position.getIndex()];
 		Position currentPosition = piece.currentPosition;
+
+		if (!piece.canTake(position))
+			return false;
 
 		if (piece.pieceColor == newPlace.pieceColor)
 			return false;
