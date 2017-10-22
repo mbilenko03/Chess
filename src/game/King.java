@@ -1,9 +1,11 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece
 {
+	public Boolean isChecked = false;
 
 	public King(Position position, Boolean color)
 	{
@@ -40,8 +42,11 @@ public class King extends Piece
 	@Override
 	public List<Position> getMoves()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<Position> moves = new ArrayList<Position>();
+
+		// figure out every possible move regardless of surroundings
+
+		return moves;
 	}
 
 }

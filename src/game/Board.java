@@ -96,6 +96,10 @@ public class Board
 		if (piece.canMove(position))
 			if ((newPlace == null))
 			{
+				// TODO check if king is checked
+				// if it is only allow move to position to uncheck it
+				// if no moves to uncheck end game
+
 				// Rules for pieces:
 				if (piece instanceof Pawn)
 				{
@@ -128,26 +132,34 @@ public class Board
 		{
 			// Check to make sure there exists a piece, it is of opposite color, and it is
 			// not a king
-			if (piece instanceof Rook)
+			if (newPlace != null)
 			{
-				return isRookMoveValid(currentPosition, position, piece.pieceColor);
-			}
-
-			if (piece instanceof Bishop)
-			{
-				return isBishopMoveValid(currentPosition, position, piece.pieceColor);
-			}
-
-			if (piece instanceof Queen)
-			{
-				if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				if (piece.pieceColor == newPlace.pieceColor)
 					return false;
-				if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-					return false;
-			}
 
-			if (newPlace != null && newPlace.pieceColor != piece.pieceColor && !(newPlace instanceof King))
-				return true;
+				if (piece instanceof Rook)
+				{
+					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
+				}
+
+				if (piece instanceof Bishop)
+				{
+					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
+				}
+
+				if (piece instanceof Queen)
+				{
+					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
+					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
+				}
+
+				if (newPlace != null && newPlace.pieceColor != piece.pieceColor && !(newPlace instanceof King))
+					return true;
+			}
 		}
 
 		return false;
@@ -262,16 +274,16 @@ public class Board
 
 	public List<Position> getMoves(Position position)
 	{
-		// TODO Implement
 		List<Position> moves = new ArrayList<Position>();
 
 		Piece piece = getPiece(position);
 
 		moves = piece.getMoves();
 
-		// edit moves according to surroundings
-		if (piece instanceof Pawn)
+		for (int i = 0; i < 64; i++)
 		{
+			if (isValidMove(piece, new Position(i)) && moves != null)
+				moves.add(new Position(i));
 		}
 
 		return moves;

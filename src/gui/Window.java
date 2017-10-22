@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -34,7 +36,7 @@ public class Window extends JFrame implements ActionListener
 	Piece selectedPiece = null;
 	Boolean isPieceSelected = false;
 
-	// TODO implement option picker
+	List<Position> possibleChoices = new ArrayList<Position>();
 
 	Boolean isWhiteTurn = true;
 
@@ -70,39 +72,44 @@ public class Window extends JFrame implements ActionListener
 			game.add(grid[i]);
 			grid[i].addActionListener(this);
 
-			// if even row
-			if ((i / SIZE) % 2 == 0)
-			{
-				// if even
-				if (i % 2 == 0)
-				{
-					grid[i].setBackground(Color.WHITE);
-				}
+			setCheckerBoardColor(i);
 
-				// if odd
-				if (i % 2 == 1)
-				{
-					grid[i].setBackground(Color.DARK_GRAY);
-				}
+		}
+	}
+
+	public void setCheckerBoardColor(int i)
+	{
+		// if even row
+		if ((i / SIZE) % 2 == 0)
+		{
+			// if even
+			if (i % 2 == 0)
+			{
+				grid[i].setBackground(Color.WHITE);
 			}
 
-			// if odd row
-			if ((i / SIZE) % 2 == 1)
+			// if odd
+			if (i % 2 == 1)
 			{
-				// if even
-				if (i % 2 == 0)
-				{
-					grid[i].setBackground(Color.DARK_GRAY);
+				grid[i].setBackground(Color.DARK_GRAY);
+			}
+		}
 
-				}
+		// if odd row
+		if ((i / SIZE) % 2 == 1)
+		{
+			// if even
+			if (i % 2 == 0)
+			{
+				grid[i].setBackground(Color.DARK_GRAY);
 
-				// if odd
-				if (i % 2 == 1)
-				{
-					grid[i].setBackground(Color.WHITE);
-				}
 			}
 
+			// if odd
+			if (i % 2 == 1)
+			{
+				grid[i].setBackground(Color.WHITE);
+			}
 		}
 	}
 
@@ -135,6 +142,31 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	public void showOptions(Position position)
+	{
+
+		possibleChoices = board.getMoves(position);
+
+		if (possibleChoices != null)
+			for (Position element : possibleChoices)
+			{
+				grid[element.getIndex()].setBackground(Color.BLUE);
+			}
+	}
+
+	public void clearOptions()
+	{
+		if (possibleChoices != null)
+		{
+			for (Position element : possibleChoices)
+			{
+				setCheckerBoardColor(element.getIndex());
+			}
+
+			possibleChoices.clear();
+		}
+	}
+
 	// Update images on board
 	public void updateBoard()
 	{
@@ -163,9 +195,9 @@ public class Window extends JFrame implements ActionListener
 					if (board.getPiece(new Position(i)) != null
 							&& board.getPiece(new Position(i)).pieceColor == isWhiteTurn)
 					{
-						// TODO show potential moves
 						selectedPiece = board.getPiece(new Position(i));
 						isPieceSelected = true;
+						showOptions(new Position(i));
 
 					} else
 					{
@@ -184,6 +216,7 @@ public class Window extends JFrame implements ActionListener
 
 					selectedPiece = null;
 					isPieceSelected = false;
+					clearOptions();
 				}
 
 				break;

@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece
@@ -42,8 +43,11 @@ public class Bishop extends Piece
 	@Override
 	public List<Position> getMoves()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<Position> moves = new ArrayList<Position>();
+
+		// figure out every possible move regardless of surroundings
+
+		return moves;
 	}
 
 }
