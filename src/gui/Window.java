@@ -191,12 +191,21 @@ public class Window extends JFrame implements ActionListener
 	{
 		endGame();
 		JOptionPane.showMessageDialog(null, "Stalemate!");
+		this.dispose();
 	}
 
 	private void endCheckGame()
 	{
 		endGame();
-		JOptionPane.showMessageDialog(null, "Checkmate! " + !isWhiteTurn + " wins!");
+		if (isWhiteTurn)
+		{
+			JOptionPane.showMessageDialog(null, "Checkmate! Black wins!");
+			this.dispose();
+		} else
+		{
+			JOptionPane.showMessageDialog(null, "Checkmate! White wins!");
+			this.dispose();
+		}
 	}
 
 	@Override
@@ -240,10 +249,13 @@ public class Window extends JFrame implements ActionListener
 					clearOptions();
 				}
 
-				if (board.isKingCheckMate(isWhiteTurn))
-					endCheckGame();
-				if (board.isStaleMate(isWhiteTurn))
-					endStaleGame();
+				if (!board.canAnyPieceMove(isWhiteTurn))
+				{
+					if (board.isKingAttacked(isWhiteTurn))
+						endCheckGame();
+					else
+						endStaleGame();
+				}
 
 				break;
 			}

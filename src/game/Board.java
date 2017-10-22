@@ -5,6 +5,13 @@ import java.util.List;
 
 public class Board
 {
+
+	// TODO Fix checkmate on take
+	// TODO Fix not being able to take piece when it results to checkmate
+	// TODO Fix stalemate
+	// TODO Add castle
+	// TODO Add En Passant
+
 	Piece[] pieces = new Piece[64];
 
 	List<Piece> whitePieces = new ArrayList<Piece>();
@@ -106,6 +113,7 @@ public class Board
 
 	private void tempMove(Piece piece, Position position)
 	{
+		pieces[position.getIndex()] = null;
 		pieces[piece.currentPosition.getIndex()] = null;
 		pieces[position.getIndex()] = piece;
 		piece.setPosition(position);
@@ -113,45 +121,23 @@ public class Board
 
 	public Boolean isValidMove(Piece piece, Position position)
 	{
+		// Piece moving to
 		Piece newPlace = pieces[position.getIndex()];
 
+		// Position before move
 		Position currentPosition = piece.currentPosition;
 
-		// Check if piece can move
+		// Ask the piece if it can move
 		if (piece.canMove(position))
+
+			// Make sure it is moving to empty square
 			if ((newPlace == null))
 			{
-				// TODO check if king is checked
-				// if it is only allow move to position to uncheck it
-				// if no moves to uncheck end game
+				// Checks if the piece can move in relation to its surroundings
+				if (!canMove(piece, position))
+					return false;
 
-				// Rules for pieces:
-				if (piece instanceof Pawn)
-				{
-					if (!isPawnMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
-				if (piece instanceof Rook)
-				{
-					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
-				if (piece instanceof Bishop)
-				{
-					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
-				if (piece instanceof Queen)
-				{
-					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
+				// Temporarily move the piece to make sure it does not result to check
 				tempMove(piece, position);
 				Boolean invalid = isKingAttacked(piece.pieceColor);
 				tempMove(piece, currentPosition);
@@ -161,22 +147,96 @@ public class Board
 				return true;
 			}
 
-		// Check if piece can take
+		// Ask the piece if it can take
 		if (piece.canTake(position))
 		{
-			// Check to make sure there exists a piece, it is of opposite color, and it is
-			// not a king
-			if (newPlace != null)
+			// Make sure it is taking a piece
+			if (newPlace != null && piece.pieceColor != newPlace.pieceColor && !(newPlace instanceof King))
 			{
+				// Check if the piece can take in relation to its surroundings
 				if (!canTake(piece, position))
 					return false;
 
-				if (newPlace != null && newPlace.pieceColor != piece.pieceColor && !(newPlace instanceof King))
-					return true;
+				// Temporarily take the piece to make sure it does not result to check
+				Piece takedPiece = getPiece(position);
+				tempMove(piece, position);
+				Boolean invalid = isKingAttacked(piece.pieceColor);
+				tempMove(piece, currentPosition);
+				tempMove(takedPiece, position);
+				if (invalid)
+					return false;
+
 			}
 		}
 
 		return false;
+	}
+
+	public Boolean canMove(Piece piece, Position position)
+	{
+		Position currentPosition = piece.currentPosition;
+
+		if (piece instanceof Pawn)
+		{
+			if (!isPawnMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Rook)
+		{
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Bishop)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Queen)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		return true;
+	}
+
+	public Boolean canTake(Piece piece, Position position)
+	{
+		Piece newPlace = pieces[position.getIndex()];
+		Position currentPosition = piece.currentPosition;
+
+		if (!piece.canTake(position))
+			return false;
+
+		if (piece.pieceColor == newPlace.pieceColor)
+			return false;
+
+		if (piece instanceof Rook)
+		{
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Bishop)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Queen)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		return true;
 	}
 
 	public Boolean isPawnMoveValid(Position currentPosition, Position newPosition, Boolean pieceColor)
@@ -286,40 +346,6 @@ public class Board
 		return true;
 	}
 
-	public Boolean canTake(Piece piece, Position position)
-	{
-		Piece newPlace = pieces[position.getIndex()];
-		Position currentPosition = piece.currentPosition;
-
-		if (!piece.canTake(position))
-			return false;
-
-		if (piece.pieceColor == newPlace.pieceColor)
-			return false;
-
-		if (piece instanceof Rook)
-		{
-			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-				return false;
-		}
-
-		if (piece instanceof Bishop)
-		{
-			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-				return false;
-		}
-
-		if (piece instanceof Queen)
-		{
-			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-				return false;
-			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-				return false;
-		}
-
-		return true;
-	}
-
 	public Boolean isPieceAttacked(Piece piece)
 	{
 		if (piece.pieceColor)
@@ -360,45 +386,23 @@ public class Board
 			return false;
 	}
 
-	public Boolean isKingCheckMate(Boolean isWhite)
+	public Boolean canAnyPieceMove(Boolean isWhite)
 	{
-		if (isWhite)
-		{
-			if (isKingAttacked(isWhite) && !canPieceMove(whiteKing))
-				return true;
-			else
-				return false;
-		} else
-		{
-			if (isKingAttacked(isWhite) && !canPieceMove(blackKing))
-				return true;
-			else
-				return false;
-		}
-
-	}
-
-	public Boolean isStaleMate(Boolean isWhite)
-	{
-		List<Position> moves = new ArrayList<Position>();
 		if (isWhite)
 		{
 			for (Piece element : whitePieces)
 			{
-				moves.addAll(getMoves(element.currentPosition));
+				if (!getMoves(element.currentPosition).isEmpty())
+					return true;
 			}
 
-			if (moves.isEmpty())
-				return true;
 		} else
 		{
 			for (Piece element : blackPieces)
 			{
-				moves.addAll(getMoves(element.currentPosition));
+				if (!getMoves(element.currentPosition).isEmpty())
+					return true;
 			}
-
-			if (moves.isEmpty())
-				return true;
 		}
 
 		return false;
@@ -409,6 +413,9 @@ public class Board
 		List<Position> moves = new ArrayList<Position>();
 
 		Piece piece = getPiece(position);
+
+		if (piece == null)
+			return moves;
 
 		moves = piece.getMoves();
 
