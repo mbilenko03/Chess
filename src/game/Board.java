@@ -7,6 +7,12 @@ public class Board
 {
 	Piece[] pieces = new Piece[64];
 
+	List<Piece> whitePieces = new ArrayList<Piece>();
+	List<Piece> blackPieces = new ArrayList<Piece>();
+
+	King whiteKing = null;
+	King blackKing = null;
+
 	public Board()
 	{
 		setInitialPositions();
@@ -63,11 +69,23 @@ public class Board
 
 	public void addPiece(Piece piece)
 	{
+		if (piece instanceof King)
+		{
+			if (piece.pieceColor)
+				whiteKing = (King) piece;
+			else
+				blackKing = (King) piece;
+		}
 		if (getPiece(piece.currentPosition) == null)
 		{
 			pieces[piece.currentPosition.getIndex()] = piece;
+			if (piece.pieceColor)
+				whitePieces.add(piece);
+			else
+				blackPieces.add(piece);
 		} else
 			throw new IllegalArgumentException();
+
 	}
 
 	public Piece getPiece(Position position)
@@ -84,6 +102,13 @@ public class Board
 			piece.moveTo(position);
 		} else
 			throw new IllegalArgumentException();
+	}
+
+	private void tempMove(Piece piece, Position position)
+	{
+		pieces[piece.currentPosition.getIndex()] = null;
+		pieces[position.getIndex()] = piece;
+		piece.setPosition(position);
 	}
 
 	public Boolean isValidMove(Piece piece, Position position)
@@ -103,17 +128,20 @@ public class Board
 				// Rules for pieces:
 				if (piece instanceof Pawn)
 				{
-					return isPawnMoveValid(currentPosition, position, piece.pieceColor);
+					if (!isPawnMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
 				}
 
 				if (piece instanceof Rook)
 				{
-					return isRookMoveValid(currentPosition, position, piece.pieceColor);
+					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
 				}
 
 				if (piece instanceof Bishop)
 				{
-					return isBishopMoveValid(currentPosition, position, piece.pieceColor);
+					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+						return false;
 				}
 
 				if (piece instanceof Queen)
@@ -123,6 +151,12 @@ public class Board
 					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
 						return false;
 				}
+
+				tempMove(piece, position);
+				Boolean invalid = isKingAttacked(piece.pieceColor);
+				tempMove(piece, currentPosition);
+				if (!invalid)
+					return false;
 
 				return true;
 			}
@@ -134,28 +168,8 @@ public class Board
 			// not a king
 			if (newPlace != null)
 			{
-				if (piece.pieceColor == newPlace.pieceColor)
+				if (!canTake(piece, position))
 					return false;
-
-				if (piece instanceof Rook)
-				{
-					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
-				if (piece instanceof Bishop)
-				{
-					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
-
-				if (piece instanceof Queen)
-				{
-					if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-					if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
-						return false;
-				}
 
 				if (newPlace != null && newPlace.pieceColor != piece.pieceColor && !(newPlace instanceof King))
 					return true;
@@ -270,6 +284,68 @@ public class Board
 		}
 
 		return true;
+	}
+
+	public Boolean canTake(Piece piece, Position position)
+	{
+		Piece newPlace = pieces[position.getIndex()];
+		Position currentPosition = piece.currentPosition;
+
+		if (piece.pieceColor == newPlace.pieceColor)
+			return false;
+
+		if (piece instanceof Rook)
+		{
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Bishop)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		if (piece instanceof Queen)
+		{
+			if (!isBishopMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+			if (!isRookMoveValid(currentPosition, position, piece.pieceColor))
+				return false;
+		}
+
+		return true;
+	}
+
+	public Boolean isPieceAttacked(Piece piece)
+	{
+		if (piece.pieceColor)
+		{
+			for (Piece element : blackPieces)
+			{
+				if (canTake(element, piece.currentPosition))
+					return true;
+			}
+		}
+
+		if (!piece.pieceColor)
+		{
+			for (Piece element : whitePieces)
+			{
+				if (canTake(element, piece.currentPosition))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	public Boolean isKingAttacked(Boolean isWhite)
+	{
+		if (isWhite)
+			return isPieceAttacked(whiteKing);
+		else
+			return isPieceAttacked(blackKing);
 	}
 
 	public List<Position> getMoves(Position position)

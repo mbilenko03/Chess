@@ -16,9 +16,14 @@ abstract public class Piece
 	public void moveTo(Position position)
 	{
 		if (canMove(position) || canTake(position))
-			currentPosition = position;
+			setPosition(position);
 		else
 			throw new IllegalArgumentException();
+	}
+
+	public void setPosition(Position position)
+	{
+		currentPosition = position;
 	}
 
 	public abstract String getIconName();
