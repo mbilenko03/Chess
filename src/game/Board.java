@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Board
 {
-
-	// TODO Fix not being able to take
 	// TODO Fix checkmate on take
 	// TODO Fix not being able to take piece when it results to checkmate
 	// TODO Fix stalemate
