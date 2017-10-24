@@ -249,6 +249,7 @@ public class Window extends JFrame implements ActionListener
 					clearOptions();
 				}
 
+				// TODO fix cananypiece move logic
 				if (!board.canAnyPieceMove(isWhiteTurn))
 				{
 					if (board.isKingAttacked(isWhiteTurn))
