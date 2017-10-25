@@ -103,10 +103,20 @@ public class Board
 		if (isValidMove(piece, position))
 		{
 			pieces[piece.currentPosition.getIndex()] = null;
+			// removePiece(piece);
 			pieces[position.getIndex()] = piece;
 			piece.moveTo(position);
 		} else
 			throw new IllegalArgumentException();
+	}
+
+	public void removePiece(Piece piece)
+	{
+		pieces[piece.currentPosition.getIndex()] = null;
+		if (piece.pieceColor)
+			whitePieces.remove(piece);
+		else
+			blackPieces.remove(piece);
 	}
 
 	private void tempMove(Piece piece, Position position)
