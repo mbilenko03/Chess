@@ -6,7 +6,6 @@ import java.util.List;
 public class Board
 {
 	// TODO Fix checkmate on take
-	// TODO Fix not being able to take piece when it results to checkmate
 	// TODO Fix stalemate
 	// TODO Add castle
 	// TODO Add En Passant
@@ -394,6 +393,7 @@ public class Board
 			{
 				if (!getMoves(element.currentPosition).isEmpty())
 					return true;
+
 			}
 
 		} else
