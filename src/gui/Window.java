@@ -63,12 +63,12 @@ public class Window extends JFrame implements ActionListener
 
 	}
 
-	// Create checker board pattern of buttons
+	// Method to create checker board pattern of buttons
 	public void initCheckerBoard()
 	{
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
-			// populate buttons to board
+			// Populate buttons to board
 			grid[i] = new JButton();
 			game.add(grid[i]);
 			grid[i].addActionListener(this);
@@ -78,6 +78,7 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Method to find the checker board color at a position
 	public void setCheckerBoardColor(int i)
 	{
 		// if even row
@@ -114,6 +115,7 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Method to update the icon of a button at a position
 	public void updateAtPosition(Position position)
 	{
 		Piece piece = board.getPiece(position);
@@ -143,9 +145,9 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Method to show the options of a position
 	public void showOptions(Position position)
 	{
-
 		possibleChoices = board.getMoves(position);
 
 		if (possibleChoices != null)
@@ -155,6 +157,7 @@ public class Window extends JFrame implements ActionListener
 			}
 	}
 
+	// Method to clear the options of a position
 	public void clearOptions()
 	{
 		if (possibleChoices != null)
@@ -168,7 +171,7 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
-	// Update images on board
+	// Method to update images on board
 	public void updateBoard()
 	{
 		// Iterate through all buttons
@@ -179,6 +182,7 @@ public class Window extends JFrame implements ActionListener
 
 	}
 
+	// Method to disable buttons at game end
 	public void endGame()
 	{
 		for (int i = 0; i < SIZE * SIZE; i++)
@@ -187,6 +191,7 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Method to show stale mate message
 	private void endStaleGame()
 	{
 		endGame();
@@ -194,6 +199,7 @@ public class Window extends JFrame implements ActionListener
 		this.dispose();
 	}
 
+	// Method to show check mate message
 	private void endCheckGame()
 	{
 		endGame();
@@ -211,47 +217,61 @@ public class Window extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent source)
 	{
-
-		// change color to potential squares to move to
-		// move piece if potential square is clicked
-
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
-			// check what piece was clicked on
+			// Check what piece was clicked on
 			if (grid[i] == source.getSource())
 			{
+				// Check if a piece has not been selected
 				if (!isPieceSelected)
 				{
+					// Check if selected piece is not empty and correct color
 					if (board.getPiece(new Position(i)) != null
 							&& board.getPiece(new Position(i)).pieceColor == isWhiteTurn)
 					{
+						// Get the selected piece
 						selectedPiece = board.getPiece(new Position(i));
+
+						// Set that a piece is selected to true
 						isPieceSelected = true;
+
+						// Display options
 						showOptions(new Position(i));
 
-					} else
-					{
-						selectedPiece = null;
 					}
-				} else
+				} else // piece was selected
 				{
+					// Check if move is valid
 					if (board.isValidMove(selectedPiece, new Position(i)))
 					{
+						// Save the previous position
 						Position previousPosition = selectedPiece.currentPosition;
+
+						// Move the piece
 						board.movePiece(selectedPiece, new Position(i));
+
+						// Update the board at the changed positions
 						updateAtPosition(previousPosition);
 						updateAtPosition(selectedPiece.currentPosition);
+
+						// Change turn
 						isWhiteTurn = !isWhiteTurn;
 					}
 
+					// Reset the selected piece
 					selectedPiece = null;
+
+					// Set that piece is not selected
 					isPieceSelected = false;
+
+					// Clear the visible options
 					clearOptions();
 				}
 
-				// TODO fix cananypiece move logic
+				// Check if every piece can not move
 				if (!board.canAnyPieceMove(isWhiteTurn))
 				{
+					// Check if king is attacked
 					if (board.isKingAttacked(isWhiteTurn))
 						endCheckGame();
 					else
