@@ -7,14 +7,15 @@ public class Board
 {
 	// TODO Add castle
 	// TODO Add En Passant
+	// TODO Add Piece Promotion
 
 	Piece[] pieces = new Piece[64];
 
 	List<Piece> whitePieces = new ArrayList<Piece>();
 	List<Piece> blackPieces = new ArrayList<Piece>();
 
-	King whiteKing = null;
-	King blackKing = null;
+	public King whiteKing = null;
+	public King blackKing = null;
 
 	public Board()
 	{

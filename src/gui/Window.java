@@ -214,6 +214,63 @@ public class Window extends JFrame implements ActionListener
 		}
 	}
 
+	// Method that attempts to select the piece
+	private void selectPiece(int i)
+	{
+		// Check if selected piece is not empty and correct color
+		if (board.getPiece(new Position(i)) != null && board.getPiece(new Position(i)).pieceColor == isWhiteTurn)
+		{
+			// Get the selected piece
+			selectedPiece = board.getPiece(new Position(i));
+
+			// Set that a piece is selected to true
+			isPieceSelected = true;
+
+			// Display options
+			showOptions(new Position(i));
+		}
+	}
+
+	// Method that disables the selection
+	private void unSelectPiece()
+	{
+		// Reset the selected piece
+		selectedPiece = null;
+
+		// Set that piece is not selected
+		isPieceSelected = false;
+
+		// Clear the visible options
+		clearOptions();
+	}
+
+	// Method to show a king is checked
+	private void showKingChecked(Boolean isWhite)
+	{
+		if (isWhite)
+		{
+			grid[board.whiteKing.currentPosition.getIndex()].setBackground(Color.RED);
+
+		}
+		if (!isWhite)
+		{
+			grid[board.blackKing.currentPosition.getIndex()].setBackground(Color.RED);
+		}
+	}
+
+	// Method to revert king is checked
+	private void revertShowKingChecked(Boolean isWhite)
+	{
+		if (isWhite)
+		{
+			setCheckerBoardColor(board.whiteKing.currentPosition.getIndex());
+		}
+		if (!isWhite)
+		{
+			setCheckerBoardColor(board.whiteKing.currentPosition.getIndex());
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent source)
 	{
@@ -222,24 +279,8 @@ public class Window extends JFrame implements ActionListener
 			// Check what piece was clicked on
 			if (grid[i] == source.getSource())
 			{
-				// Check if a piece has not been selected
-				if (!isPieceSelected)
-				{
-					// Check if selected piece is not empty and correct color
-					if (board.getPiece(new Position(i)) != null
-							&& board.getPiece(new Position(i)).pieceColor == isWhiteTurn)
-					{
-						// Get the selected piece
-						selectedPiece = board.getPiece(new Position(i));
-
-						// Set that a piece is selected to true
-						isPieceSelected = true;
-
-						// Display options
-						showOptions(new Position(i));
-
-					}
-				} else // piece was selected
+				// Check if piece is already selected
+				if (isPieceSelected)
 				{
 					// Check if move is valid
 					if (board.isValidMove(selectedPiece, new Position(i)))
@@ -258,15 +299,18 @@ public class Window extends JFrame implements ActionListener
 						isWhiteTurn = !isWhiteTurn;
 					}
 
-					// Reset the selected piece
-					selectedPiece = null;
-
-					// Set that piece is not selected
-					isPieceSelected = false;
-
-					// Clear the visible options
-					clearOptions();
+					// Turn off selections
+					unSelectPiece();
 				}
+
+				// Select the piece if it can
+				selectPiece(i);
+
+				// Show color of king square depending if checked
+				if (board.isKingAttacked(isWhiteTurn))
+					showKingChecked(isWhiteTurn);
+				else
+					revertShowKingChecked(isWhiteTurn);
 
 				// Check if every piece can not move
 				if (!board.canAnyPieceMove(isWhiteTurn))
