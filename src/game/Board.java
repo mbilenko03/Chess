@@ -21,7 +21,7 @@ public class Board
 	{
 		for (Piece element : Preset.getInitialPieces())
 		{
-			this.addPiece(element);
+			addPiece(element);
 		}
 	}
 

@@ -55,7 +55,7 @@ public class Window extends JFrame implements ActionListener
 
 		initCheckerBoard();
 
-		this.add(game);
+		add(game);
 
 		setVisible(true);
 
@@ -185,6 +185,8 @@ public class Window extends JFrame implements ActionListener
 	// Method to disable buttons at game end
 	public void endGame()
 	{
+		unSelectPiece();
+
 		for (int i = 0; i < SIZE * SIZE; i++)
 		{
 			grid[i].setEnabled(false);
@@ -297,6 +299,22 @@ public class Window extends JFrame implements ActionListener
 
 						// Change turn
 						isWhiteTurn = !isWhiteTurn;
+
+						// Show color of king square depending if checked
+						if (board.isKingAttacked(isWhiteTurn))
+							showKingChecked(isWhiteTurn);
+						else
+							revertShowKingChecked(isWhiteTurn);
+
+						// Check if every piece can not move
+						if (!board.canAnyPieceMove(isWhiteTurn))
+						{
+							// Check if king is attacked
+							if (board.isKingAttacked(isWhiteTurn))
+								endCheckGame();
+							else
+								endStaleGame();
+						}
 					}
 
 					// Turn off selections
@@ -305,22 +323,6 @@ public class Window extends JFrame implements ActionListener
 
 				// Select the piece if it can
 				selectPiece(i);
-
-				// Show color of king square depending if checked
-				if (board.isKingAttacked(isWhiteTurn))
-					showKingChecked(isWhiteTurn);
-				else
-					revertShowKingChecked(isWhiteTurn);
-
-				// Check if every piece can not move
-				if (!board.canAnyPieceMove(isWhiteTurn))
-				{
-					// Check if king is attacked
-					if (board.isKingAttacked(isWhiteTurn))
-						endCheckGame();
-					else
-						endStaleGame();
-				}
 
 				break;
 			}
