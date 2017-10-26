@@ -23,6 +23,8 @@ import game.Position;
 
 public class Window extends JFrame implements ActionListener
 {
+	// TODO fix red checking
+
 	private static final long serialVersionUID = 1L;
 
 	final Dimension WINDOW_SIZE = new Dimension(1000, 1000);
@@ -304,7 +306,7 @@ public class Window extends JFrame implements ActionListener
 						if (board.isKingAttacked(isWhiteTurn))
 							showKingChecked(isWhiteTurn);
 						else
-							revertShowKingChecked(isWhiteTurn);
+							revertShowKingChecked(!isWhiteTurn);
 
 						// Check if every piece can not move
 						if (!board.canAnyPieceMove(isWhiteTurn))
