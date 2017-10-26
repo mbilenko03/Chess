@@ -8,6 +8,7 @@ public class Board
 	// TODO Fix checkmate on take
 	// TODO Fix king can't hide behind piece when piece is underattack
 	// TODO Fix stalemate
+
 	// TODO Add castle
 	// TODO Add En Passant
 
@@ -103,8 +104,9 @@ public class Board
 	{
 		if (isValidMove(piece, position))
 		{
+			if (pieces[position.getIndex()] != null)
+				removePiece(pieces[position.getIndex()]);
 			pieces[piece.currentPosition.getIndex()] = null;
-			// removePiece(piece);
 			pieces[position.getIndex()] = piece;
 			piece.moveTo(position);
 		} else
