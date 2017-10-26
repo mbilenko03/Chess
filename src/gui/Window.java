@@ -263,16 +263,10 @@ public class Window extends JFrame implements ActionListener
 	}
 
 	// Method to revert king is checked
-	private void revertShowKingChecked(Boolean isWhite)
+	private void revertShowKingChecked()
 	{
-		if (isWhite)
-		{
-			setCheckerBoardColor(board.whiteKing.currentPosition.getIndex());
-		}
-		if (!isWhite)
-		{
-			setCheckerBoardColor(board.whiteKing.currentPosition.getIndex());
-		}
+		setCheckerBoardColor(board.whiteKing.currentPosition.getIndex());
+		setCheckerBoardColor(board.blackKing.currentPosition.getIndex());
 	}
 
 	@Override
@@ -302,11 +296,11 @@ public class Window extends JFrame implements ActionListener
 						// Change turn
 						isWhiteTurn = !isWhiteTurn;
 
+						revertShowKingChecked();
+
 						// Show color of king square depending if checked
 						if (board.isKingAttacked(isWhiteTurn))
 							showKingChecked(isWhiteTurn);
-						else
-							revertShowKingChecked(!isWhiteTurn);
 
 						// Check if every piece can not move
 						if (!board.canAnyPieceMove(isWhiteTurn))
