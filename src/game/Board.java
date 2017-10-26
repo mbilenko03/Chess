@@ -6,6 +6,7 @@ import java.util.List;
 public class Board
 {
 	// TODO Fix checkmate on take
+	// TODO Fix king can't hide behind piece when piece is underattack
 	// TODO Fix stalemate
 	// TODO Add castle
 	// TODO Add En Passant
