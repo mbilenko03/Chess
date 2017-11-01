@@ -9,6 +9,6 @@
 <h2>Releases</h2>
 <ul>
 <li><a href="https://github.com/mbilenko03/Chess/releases">All Releases</a></li>
-<p>There are currently no releases. Feel free to mess around with the code.</p>
+<p>There is currently no release. Feel free to mess around with the code.</p>
 </ul>
 <hr>
