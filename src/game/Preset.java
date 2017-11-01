@@ -56,6 +56,7 @@ public class Preset
 		return pieces;
 	}
 
+	// Position to set up a stalemate
 	public static List<Piece> getStaleMate()
 	{
 		List<Piece> pieces = new ArrayList<Piece>();
